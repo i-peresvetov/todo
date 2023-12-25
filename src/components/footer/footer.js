@@ -1,5 +1,7 @@
 import React from 'react';
 
+import TasksFilter from '../tasks-filter/tasks-filter';
+
 const Footer = () => {
     let itemsLeft = 1
     return (
@@ -7,11 +9,7 @@ const Footer = () => {
             <span className='todo-count'>
                 {itemsLeft} items left
             </span>
-            <ul className='filters'>
-                <li><button className='selected'>All</button></li>                
-                <li><button>Active</button></li>
-                <li><button>Completed</button></li>
-            </ul>
+            <TasksFilter/>
             <button className='clear-completed'>
                 Clear completed
             </button>
