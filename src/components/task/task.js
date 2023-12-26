@@ -5,34 +5,39 @@ const createdTime = '17 seconds'
 export default class Task extends Component {
 
     state = {
-        done: this.props.done,
+        // done: this.props.done,
         createdTime: createdTime
     }
 
-    onLabelClick = () => {
-        console.log('click')        
-        this.setState(({ done }) => {
-          return {
-            done: !done,
-          };
-        });        
-      };
-
     render() {
-        const {label, onDelete} = this.props
-        const {done} = this.state
+        const {label, onDelete, done, onToggleComplite, filterStatus} = this.props
         let doneClass = ''
         if (done) {
             doneClass += ' completed'
         }
 
+        let isHidden = false
+        switch(filterStatus) {
+            case 'All':
+                isHidden = false
+                break
+            case 'Completed':
+                isHidden = !done
+                break
+            case 'Active':
+                isHidden = done
+                break
+            default:
+                console.log('Error!!!')
+        }
+
         return (
-            <li className={doneClass}>
+            <li className={doneClass} hidden={isHidden}>
                 <div className='view'>
                     <input
                      type='checkbox'
                      className='toggle'
-                     onChange={this.onLabelClick}
+                     onChange={onToggleComplite}
                      defaultChecked={done}/>
                     <label>
                         <span className='description'>{label}</span>
