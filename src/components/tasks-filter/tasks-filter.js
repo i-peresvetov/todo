@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 const FilterButton = ({name, filterStatus, onToggleFilter}) => {
     let selectStatus
@@ -28,6 +29,15 @@ const TasksFilter = ({filterStatus, onToggleFilter}) => {
                 {filterButtons}
             </ul>
     )
+}
+
+TasksFilter.defaultProps = {
+    filterStatus: 'All'
+}
+
+TasksFilter.propTypes = {
+    filterStatus: PropTypes.string,
+    onToggleFilter: PropTypes.func.isRequired
 }
 
 export default TasksFilter

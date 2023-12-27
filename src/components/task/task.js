@@ -1,9 +1,24 @@
 import React, { Component } from 'react';
 import { formatDistanceToNow } from "date-fns";
-
-const createdTime = '17 seconds'
+import PropTypes from 'prop-types'
 
 export default class Task extends Component {
+
+    static defaultProps = {
+        label: 'Задание',
+        done: false,
+        filterStatus: 'All',
+        createDate: Date.now()
+    }
+
+    static propTypes = {
+        label: PropTypes.string,
+        done: PropTypes.bool,        
+        onDelete: PropTypes.func.isRequired,
+        onToggleComplite: PropTypes.func.isRequired,
+        filterStatus: PropTypes.string,
+        createDate: PropTypes.number
+    }
 
     state = {
         timeStr: '0 seconds'
