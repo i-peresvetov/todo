@@ -14,6 +14,7 @@ const TaskList = ({todos, onDelete, onToggleComplite, filterStatus}) => {
              onDelete={() => onDelete(task.id)}
              onToggleComplite={()=> onToggleComplite(task.id)}
              filterStatus={filterStatus}
+             createDate={task.createDate}
             />
         )
     })

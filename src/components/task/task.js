@@ -1,20 +1,33 @@
 import React, { Component } from 'react';
+import { formatDistanceToNow } from "date-fns";
 
 const createdTime = '17 seconds'
 
 export default class Task extends Component {
 
     state = {
-        // done: this.props.done,
-        createdTime: createdTime
+        timeStr: '0 seconds'
+    }
+
+    updateTimeStr = () => {
+        this.setState(()=>{
+            return {
+                timeStr: formatDistanceToNow(this.props.createDate, { includeSeconds: true })
+            }
+        })
     }
 
     render() {
         const {label, onDelete, done, onToggleComplite, filterStatus} = this.props
+
+        const {timeStr} = this.state
+
         let doneClass = ''
         if (done) {
             doneClass += ' completed'
         }
+
+        setInterval(this.updateTimeStr, 1000)
 
         let isHidden = false
         switch(filterStatus) {
@@ -28,7 +41,7 @@ export default class Task extends Component {
                 isHidden = done
                 break
             default:
-                console.log('Error!!!')
+                throw new Error('Не верный тип фильтра')
         }
 
         return (
@@ -41,7 +54,7 @@ export default class Task extends Component {
                      defaultChecked={done}/>
                     <label>
                         <span className='description'>{label}</span>
-                        <span className='created'>created {createdTime} ago</span>
+                        <span className='created'>created {timeStr} ago</span>
                     </label>
                     <button className='icon icon-edit'></button>
                     <button
