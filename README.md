@@ -1,4 +1,8 @@
 Todo App
 
-- записать Id таймера и удалять его при удалении таска
-    поднять id в state app и удалять там?
+App
+    NewTaskForm
+    TaskList
+        Task
+    Footer
+        TasksFilter

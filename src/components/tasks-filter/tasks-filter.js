@@ -9,6 +9,16 @@ const FilterButton = ({name, filterStatus, onToggleFilter}) => {
     )
 }
 
+FilterButton.defaultProps = {    
+    filterStatus: 'All'
+}
+
+FilterButton.propTypes = {
+    name: PropTypes.string.isRequired,
+    filterStatus: PropTypes.string,
+    onToggleFilter: PropTypes.func.isRequired
+}
+
 const TasksFilter = ({filterStatus, onToggleFilter}) => {
 
     const filterNames = ['All', 'Active', 'Completed']

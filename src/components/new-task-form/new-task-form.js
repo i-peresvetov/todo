@@ -19,7 +19,12 @@ export default class NewTaskForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault()
-    this.props.onAdd(this.state.inputValue)
+    const newTaskName = this.state.inputValue.trim()
+
+    if (newTaskName !== '') {
+      this.props.onAdd(newTaskName)
+    }
+
     this.setState({
       inputValue: ''
     })
