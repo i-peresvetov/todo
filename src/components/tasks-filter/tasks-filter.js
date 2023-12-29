@@ -1,53 +1,56 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
 
-const FilterButton = ({name, filterStatus, onToggleFilter}) => {
-    let selectStatus
-    if (filterStatus === name) selectStatus = 'selected'
-    return (
-        <li><button onClick={onToggleFilter} className={selectStatus}>{name}</button></li>
-    )
+function FilterButton({ name, filterStatus, onToggleFilter }) {
+  let selectStatus
+  if (filterStatus === name) selectStatus = 'selected'
+  return (
+    <li>
+      <button type="button" onClick={onToggleFilter} className={selectStatus}>
+        {name}
+      </button>
+    </li>
+  )
 }
 
-FilterButton.defaultProps = {    
-    filterStatus: 'All'
+FilterButton.defaultProps = {
+  filterStatus: 'All',
 }
 
 FilterButton.propTypes = {
-    name: PropTypes.string.isRequired,
-    filterStatus: PropTypes.string,
-    onToggleFilter: PropTypes.func.isRequired
+  name: PropTypes.string.isRequired,
+  filterStatus: PropTypes.string,
+  onToggleFilter: PropTypes.func.isRequired,
 }
 
-const TasksFilter = ({filterStatus, onToggleFilter}) => {
+function TasksFilter({ filterStatus, onToggleFilter }) {
+  const filterNames = [
+    { name: 'All', id: 1 },
+    { name: 'Active', id: 2 },
+    { name: 'Completed', id: 3 },
+  ]
 
-    const filterNames = ['All', 'Active', 'Completed']
-
-    const filterButtons = filterNames.map((filterName, key)=>{
-        return (
-            <FilterButton
-             name={filterName}
-             filterStatus={filterStatus}
-             onToggleFilter={()=>onToggleFilter(filterName)}
-             key={key+1}
-           />
-        )
-    })
-
+  const filterButtons = filterNames.map(({ filterName, id }) => {
     return (
-            <ul className='filters'>
-                {filterButtons}
-            </ul>
+      <FilterButton
+        name={filterName}
+        filterStatus={filterStatus}
+        onToggleFilter={() => onToggleFilter(filterName)}
+        key={id}
+      />
     )
+  })
+
+  return <ul className="filters">{filterButtons}</ul>
 }
 
 TasksFilter.defaultProps = {
-    filterStatus: 'All'
+  filterStatus: 'All',
 }
 
 TasksFilter.propTypes = {
-    filterStatus: PropTypes.string,
-    onToggleFilter: PropTypes.func.isRequired
+  filterStatus: PropTypes.string,
+  onToggleFilter: PropTypes.func.isRequired,
 }
 
 export default TasksFilter

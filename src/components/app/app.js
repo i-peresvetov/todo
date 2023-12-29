@@ -1,68 +1,76 @@
-import React, { Component } from "react";
-// import { formatDistanceToNow } from "date-fns";
+import React, { Component } from 'react'
 
-import NewTaskForm from "../new-task-form"
-import TaskList from "../task-list";
-import Footer from "../footer";
+import NewTaskForm from '../new-task-form/new-task-form'
+import TaskList from '../task-list/task-list'
+import Footer from '../footer/footer'
 
-import "./app.css";
+import './app.css'
 
-// timeStr: formatDistanceToNow(this.props.createDate, { includeSeconds: true })
-
-export default class App extends Component {
-
+class App extends Component {
   taskId = 10
 
-  state = {
-    todoDate: [
-      {label: "Completed task", done: true, id: 1, createDate: Date.now(), timerId: undefined},
-      {label: "Editing task", done: false, id: 2, createDate: Date.now(), timerId: undefined},
-      {label: "Active task", done: false, id: 3, createDate: Date.now(), timerId: undefined},
-    ],
-    filterStatus: 'All'
-  };
-
-  createTask(text) {
-    return {
-      label: text,
-      done: false,
-      id: this.taskId++,
-      createDate: Date.now()
+  constructor(props) {
+    super(props)
+    this.state = {
+      todoDate: [
+        { label: 'Completed task', done: true, id: 1, createDate: Date.now(), timerId: undefined },
+        { label: 'Editing task', done: false, id: 2, createDate: Date.now(), timerId: undefined },
+        { label: 'Active task', done: false, id: 3, createDate: Date.now(), timerId: undefined },
+      ],
+      filterStatus: 'All',
     }
   }
 
-  changePropOfTask(todoDate, id, propName, newValue) {
-    const indexOfTask = todoDate.findIndex((task)=>task.id === id)
-
-    const oldTask = todoDate[indexOfTask]
-    let newTask
-    if (newValue) {
-      newTask = {...oldTask, [propName]: newValue}
-      
+  changeLabel = (id, newLabel) => {
+    if (newLabel === '') {
+      this.deleteTask(id)
     } else {
-      newTask = {...oldTask, [propName]: !oldTask[propName]}
-    }    
+      this.setState(() => {
+        return {
+          todoDate: this.changePropOfTask(id, 'label', newLabel),
+        }
+      })
+    }
+  }
 
-    const newTodoDate = [...todoDate]
-    newTodoDate.splice(indexOfTask, 1, newTask)
+  setTimerId = (id, newTimerId) => {
+    this.setState(() => {
+      return {
+        todoDate: this.changePropOfTask(id, 'timerId', newTimerId),
+      }
+    })
+  }
 
-    return newTodoDate
+  toggleFilter = (filterName) => {
+    this.setState(() => {
+      return {
+        filterStatus: filterName,
+      }
+    })
+  }
+
+  toggleComplite = (id) => {
+    this.setState(() => {
+      return {
+        todoDate: this.changePropOfTask(id, 'done'),
+      }
+    })
   }
 
   addTask = (text) => {
     const newTask = this.createTask(text)
 
-    this.setState(({todoDate})=>{
+    this.setState(({ todoDate }) => {
       const newTodoDate = [...todoDate, newTask]
       return {
-        todoDate: newTodoDate
+        todoDate: newTodoDate,
       }
     })
   }
 
   deleteTask = (id) => {
-    this.setState(({todoDate})=>{
-      const indexOfTask = todoDate.findIndex((task)=>task.id === id)
+    this.setState(({ todoDate }) => {
+      const indexOfTask = todoDate.findIndex((task) => task.id === id)
 
       clearInterval(todoDate[indexOfTask].timerId)
 
@@ -70,90 +78,85 @@ export default class App extends Component {
       newTodoDate.splice(indexOfTask, 1)
 
       return {
-        todoDate: newTodoDate
+        todoDate: newTodoDate,
       }
     })
   }
 
   clearComplited = () => {
-    this.state.todoDate.forEach((task)=>{
+    const { todoDateArr } = this.state
+
+    todoDateArr.forEach((task) => {
       clearInterval(task.timerId)
     })
-    
-    this.setState(({todoDate})=>{
-      const newTodoDate = todoDate.filter((task)=>task.done === false)
+
+    this.setState(({ todoDate }) => {
+      const newTodoDate = todoDate.filter((task) => task.done === false)
 
       return {
-        todoDate: newTodoDate
+        todoDate: newTodoDate,
       }
     })
   }
 
-  toggleComplite = (id) => {
-    this.setState(({todoDate})=>{
-      return {
-        todoDate: this.changePropOfTask(todoDate, id, 'done')
-      }
-    })
-  }
+  changePropOfTask = (id, propName, newValue) => {
+    const { todoDate } = this.state
+    const indexOfTask = todoDate.findIndex((task) => task.id === id)
 
-  toggleFilter = (filterName) => {    
-    this.setState(()=>{
-      return {
-        filterStatus: filterName
-      }
-    })
-  }
-
-  setTimerId = (id, newTimerId) => {
-    this.setState(({todoDate})=>{
-      return {
-        todoDate: this.changePropOfTask(todoDate, id, 'timerId', newTimerId)
-      }
-    })
-  }
-
-  changeLabel = (id, newLabel) => {
-    if (newLabel === '') {
-      this.deleteTask(id)
+    const oldTask = todoDate[indexOfTask]
+    let newTask
+    if (newValue) {
+      newTask = { ...oldTask, [propName]: newValue }
     } else {
-      this.setState(({todoDate})=>{
-        return {
-          todoDate: this.changePropOfTask(todoDate, id, 'label', newLabel)
-        }
-      })
+      newTask = { ...oldTask, [propName]: !oldTask[propName] }
     }
+
+    const newTodoDate = [...todoDate]
+    newTodoDate.splice(indexOfTask, 1, newTask)
+
+    return newTodoDate
+  }
+
+  createTask(text) {
+    const newTask = {
+      label: text,
+      done: false,
+      id: (this.taskId += this.taskId),
+      createDate: Date.now(),
+    }
+    return newTask
   }
 
   render() {
+    const { todoDate, filterStatus } = this.state
 
-    const {todoDate, filterStatus} = this.state
-
-    const tasksLeft = todoDate.filter((task)=>!task.done).length
+    const tasksLeft = todoDate.filter((task) => !task.done).length
 
     return (
       <section className="todoapp">
         <header className="header">
           <h1>todos</h1>
-          <NewTaskForm onAdd={this.addTask}/>
-        </header>        
+          <NewTaskForm onAdd={this.addTask} />
+        </header>
         <section className="main">
           <TaskList
-           todos={this.state.todoDate}
-           onDelete={this.deleteTask}
-           onToggleComplite={this.toggleComplite}
-           filterStatus={filterStatus}
-           setTimerId={this.setTimerId}
-           changeLabel={this.changeLabel}
+            todos={todoDate}
+            onDelete={this.deleteTask}
+            onToggleComplite={this.toggleComplite}
+            filterStatus={filterStatus}
+            setTimerId={this.setTimerId}
+            changeLabel={this.changeLabel}
           />
           <Footer
-           onClearComplited={this.clearComplited}
-           tasksLeft={tasksLeft}
-           filterStatus={filterStatus}
-           onToggleFilter={this.toggleFilter}
+            onClearComplited={this.clearComplited}
+            tasksLeft={tasksLeft}
+            filterStatus={filterStatus}
+            onToggleFilter={this.toggleFilter}
           />
         </section>
       </section>
-    );
+    )
   }
 }
+
+export default App

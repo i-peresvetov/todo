@@ -1,128 +1,125 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow } from 'date-fns'
 
+class Task extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      timeStr: '0 seconds', // можно посчитать по пропсу, что надо сделать?
+      editing: false,
+    }
+  }
 
-export default class Task extends Component {
+  componentDidMount() {
+    const { setTimerId, id } = this.props
+    setTimerId(
+      id,
+      setInterval(() => this.updateTimeStr(), 1000)
+    )
+  }
 
-    state = {
-        timeStr: '0 seconds', // можно посчитать по пропсу, что надо сделать?
-        editing: false
+  updateTimeStr = () => {
+    this.setState(() => {
+      const { createDate } = this.props
+      return {
+        timeStr: formatDistanceToNow(createDate, { includeSeconds: true }),
+      }
+    })
+  }
+
+  toggleEditing = () => {
+    this.setState(({ editing }) => {
+      return {
+        editing: !editing,
+      }
+    })
+  }
+
+  onSubmit = (e) => {
+    const { label, id, changeLabel } = this.props
+    e.preventDefault()
+    const trimedLable = label.trim()
+    if (trimedLable !== '') {
+      changeLabel(id, trimedLable)
+      this.toggleEditing()
+    } else {
+      throw new Error('Не верный ввод') // подсвечивать инпут красным?..
+    }
+  }
+
+  onValueChange = (e) => {
+    const { id, changeLabel } = this.props
+    changeLabel(id, e.target.value)
+  }
+
+  render() {
+    const { label, onDelete, done, onToggleComplite, filterStatus, id } = this.props
+
+    const { timeStr, editing } = this.state
+
+    let liClass = ''
+    if (done) {
+      liClass += ' completed'
     }
 
-    static defaultProps = {
-        label: 'Задание',
-        done: false,
-        filterStatus: 'All',
-        createDate: Date.now()
+    if (editing) {
+      liClass += ' editing'
     }
 
-    static propTypes = {
-        label: PropTypes.string,
-        done: PropTypes.bool,
-        id: PropTypes.number.isRequired,
-        onDelete: PropTypes.func.isRequired,
-        onToggleComplite: PropTypes.func.isRequired,
-        filterStatus: PropTypes.string,
-        createDate: PropTypes.number,
-        setTimerId: PropTypes.func.isRequired,
-        changeLabel: PropTypes.func.isRequired
+    let isHidden = false
+    switch (filterStatus) {
+      case 'All':
+        isHidden = false
+        break
+      case 'Completed':
+        isHidden = !done
+        break
+      case 'Active':
+        isHidden = done
+        break
+      default:
+        throw new Error('Не верный тип фильтра')
     }
 
-    componentDidMount() {
-        this.props.setTimerId(this.props.id, setInterval(()=>this.updateTimeStr(), 1000))
-    }
+    const inputId = `input-${id}`
 
-    updateTimeStr = () => {
-        this.setState(()=>{
-            return {
-                timeStr: formatDistanceToNow(this.props.createDate, { includeSeconds: true })
-            }
-        })
-    }
-
-    toggleEditing = () => {
-        this.setState(({editing})=>{
-            return {
-                editing: !editing
-            }
-        })
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault()
-        const trimedLable = this.props.label.trim()
-        if (trimedLable !== '') {
-            this.props.changeLabel(this.props.id, trimedLable)
-            this.toggleEditing()
-        } else {
-            console.log('В вводе пустое значение') // подсвечивать инпут красным?..
-        }
-    }
-
-    onValueChange = (e) => {    
-        this.props.changeLabel(this.props.id, e.target.value)
-    }
-
-    render() {
-        const {label, onDelete, done, onToggleComplite, filterStatus} = this.props
-
-        const {timeStr, editing} = this.state
-        
-        let liClass = ''
-        if (done) {
-            liClass += ' completed'
-        }
-
-        if (editing) {
-            liClass += ' editing'
-        }
-
-        let isHidden = false
-        switch(filterStatus) {
-            case 'All':
-                isHidden = false
-                break
-            case 'Completed':
-                isHidden = !done
-                break
-            case 'Active':
-                isHidden = done
-                break
-            default:
-                throw new Error('Не верный тип фильтра')
-        }
-
-        return (
-            <li className={liClass} hidden={isHidden}>
-                <div className='view'>
-                    <input
-                     type='checkbox'
-                     className='toggle'
-                     onChange={onToggleComplite}
-                     defaultChecked={done}/>
-                    <label>
-                        <span className='description'>{label}</span>
-                        <span className='created'>created {timeStr} ago</span>
-                    </label>
-                    <button
-                     className='icon icon-edit'
-                     onClick={this.toggleEditing}
-                    ></button>
-                    <button
-                     className='icon icon-destroy'
-                     onClick={onDelete}
-                    ></button>
-                </div>
-                <form onSubmit={this.onSubmit}>
-                    <input
-                     type='text'
-                     className='edit'
-                     value={this.props.label}
-                     onChange={this.onValueChange}
-                    />
-                </form>
-            </li>
-        )
-    }
+    return (
+      <li className={liClass} hidden={isHidden}>
+        <div className="view">
+          <input type="checkbox" className="toggle" onChange={onToggleComplite} defaultChecked={done} />
+          <label htmlFor={inputId}>
+            <span className="description">{label}</span>
+            <span className="created">created {timeStr} ago</span>
+          </label>
+          <button aria-label="Редактировать" type="button" className="icon icon-edit" onClick={this.toggleEditing} />
+          <button aria-label="Удалить" type="button" className="icon icon-destroy" onClick={onDelete} />
+        </div>
+        <form onSubmit={this.onSubmit}>
+          <input type="text" id={inputId} className="edit" value={label} onChange={this.onValueChange} />
+        </form>
+      </li>
+    )
+  }
 }
+
+Task.defaultProps = {
+  label: 'Задание',
+  done: false,
+  filterStatus: 'All',
+  createDate: Date.now(),
+}
+
+Task.propTypes = {
+  label: PropTypes.string,
+  done: PropTypes.bool,
+  id: PropTypes.number.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onToggleComplite: PropTypes.func.isRequired,
+  filterStatus: PropTypes.string,
+  createDate: PropTypes.number,
+  setTimerId: PropTypes.func.isRequired,
+  changeLabel: PropTypes.func.isRequired,
+}
+
+export default Task
