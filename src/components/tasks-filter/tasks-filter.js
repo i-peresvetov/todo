@@ -25,9 +25,9 @@ FilterButton.propTypes = {
 
 function TasksFilter({ filterStatus, onToggleFilter }) {
   const filterNames = [
-    { name: 'All', id: 1 },
-    { name: 'Active', id: 2 },
-    { name: 'Completed', id: 3 },
+    { filterName: 'All', id: 1 },
+    { filterName: 'Active', id: 2 },
+    { filterName: 'Completed', id: 3 },
   ]
 
   const filterButtons = filterNames.map(({ filterName, id }) => {

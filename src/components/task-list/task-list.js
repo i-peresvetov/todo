@@ -33,11 +33,11 @@ TaskList.defaultProps = {
 TaskList.propsTypes = {
   todos: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string,
-      done: PropTypes.bool,
-      id: PropTypes.number,
-      createDate: PropTypes.Date,
-      timerId: PropTypes.number,
+      label: PropTypes.string.isRequired,
+      done: PropTypes.bool.isRequired,
+      id: PropTypes.number.isRequired,
+      createDate: PropTypes.Date.isRequired,
+      timerId: PropTypes.number.isRequired,
     })
   ).isRequired,
   onDelete: PropTypes.func.isRequired,

@@ -84,7 +84,7 @@ class App extends Component {
   }
 
   clearComplited = () => {
-    const { todoDateArr } = this.state
+    const { todoDate: todoDateArr } = this.state
 
     todoDateArr.forEach((task) => {
       clearInterval(task.timerId)

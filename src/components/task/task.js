@@ -6,7 +6,7 @@ class Task extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      timeStr: '0 seconds', // можно посчитать по пропсу, что надо сделать?
+      timeStr: '0 seconds',
       editing: false,
     }
   }
@@ -43,8 +43,6 @@ class Task extends Component {
     if (trimedLable !== '') {
       changeLabel(id, trimedLable)
       this.toggleEditing()
-    } else {
-      throw new Error('Не верный ввод') // подсвечивать инпут красным?..
     }
   }
 
