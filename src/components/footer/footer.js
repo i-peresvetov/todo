@@ -5,7 +5,7 @@ import TasksFilter from '../tasks-filter/tasks-filter'
 
 import './footer.css'
 
-function Footer({ onClearComplited, tasksLeft, filterStatus, onToggleFilter }) {
+export default function Footer({ onClearComplited, tasksLeft, filterStatus, onToggleFilter }) {
   return (
     <footer className="footer">
       <span className="todo-count">{tasksLeft} items left</span>
@@ -28,5 +28,3 @@ Footer.propTypes = {
   filterStatus: PropTypes.string,
   onToggleFilter: PropTypes.func.isRequired,
 }
-
-export default Footer

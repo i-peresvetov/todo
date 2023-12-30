@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import './tasks-filter.css'
 
-function FilterButton({ name, filterStatus, onToggleFilter }) {
+export default function FilterButton({ name, filterStatus, onToggleFilter }) {
   let selectStatus
   if (filterStatus === name) selectStatus = 'selected'
   return (
@@ -54,5 +54,3 @@ TasksFilter.propTypes = {
   filterStatus: PropTypes.string,
   onToggleFilter: PropTypes.func.isRequired,
 }
-
-export default TasksFilter

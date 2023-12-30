@@ -5,7 +5,7 @@ import Task from '../task/task'
 
 import './task-list.css'
 
-function TaskList({ todos, onDelete, onToggleComplite, filterStatus, setTimerId, changeLabel }) {
+export default function TaskList({ todos, onDelete, onToggleComplite, filterStatus, setTimerId, changeLabel }) {
   const tasks = todos.map((task) => {
     return (
       <Task
@@ -48,5 +48,3 @@ TaskList.propsTypes = {
   setTimerId: PropTypes.func.isRequired,
   changeLabel: PropTypes.func.isRequired,
 }
-
-export default TaskList
