@@ -60,5 +60,6 @@
       "eslint --fix",
       "prettier --write"
     ]
-  }
+  },
+  "homepage": "./"
 }

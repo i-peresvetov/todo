@@ -36,7 +36,7 @@ TaskList.propsTypes = {
       label: PropTypes.string.isRequired,
       done: PropTypes.bool.isRequired,
       id: PropTypes.number.isRequired,
-      createDate: PropTypes.Date.isRequired,
+      createDate: PropTypes.number.isRequired,
       timerId: PropTypes.number.isRequired,
     })
   ).isRequired,
