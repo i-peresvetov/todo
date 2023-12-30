@@ -6,7 +6,7 @@ import Footer from '../footer/footer'
 
 import './app.css'
 
-class App extends Component {
+export default class App extends Component {
   taskId = 10
 
   constructor(props) {
@@ -158,5 +158,3 @@ class App extends Component {
     )
   }
 }
-
-export default App

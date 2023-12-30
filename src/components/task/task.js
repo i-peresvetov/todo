@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 import './task.css'
 
-class Task extends Component {
+export default class Task extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -121,5 +121,3 @@ Task.propTypes = {
   setTimerId: PropTypes.func.isRequired,
   changeLabel: PropTypes.func.isRequired,
 }
-
-export default Task
