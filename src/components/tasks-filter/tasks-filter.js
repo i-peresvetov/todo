@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import './tasks-filter.css'
+
 function FilterButton({ name, filterStatus, onToggleFilter }) {
   let selectStatus
   if (filterStatus === name) selectStatus = 'selected'
