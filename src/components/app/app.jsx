@@ -27,16 +27,16 @@ export default class App extends Component {
     } else {
       this.setState(({ todoDate }) => {
         return {
-          todoDate: this.changePropOfTask(id, 'label', newLabel, todoDate),
+          todoDate: this.changePropOfTask(todoDate, id, 'label', newLabel),
         }
       })
     }
   }
 
   setTimerId = (id, newTimerId) => {
-    this.setState(() => {
+    this.setState(({ todoDate }) => {
       return {
-        todoDate: this.changePropOfTask(id, 'timerId', newTimerId),
+        todoDate: this.changePropOfTask(todoDate, id, 'timerId', newTimerId),
       }
     })
   }
@@ -50,9 +50,9 @@ export default class App extends Component {
   }
 
   toggleComplite = (id) => {
-    this.setState(() => {
+    this.setState(({ todoDate }) => {
       return {
-        todoDate: this.changePropOfTask(id, 'done'),
+        todoDate: this.changePropOfTask(todoDate, id, 'done'),
       }
     })
   }
@@ -99,7 +99,7 @@ export default class App extends Component {
     })
   }
 
-  changePropOfTask = (id, propName, newValue, todoDate) => {
+  changePropOfTask = (todoDate, id, propName, newValue) => {
     const indexOfTask = todoDate.findIndex((task) => task.id === id)
 
     const oldTask = todoDate[indexOfTask]
