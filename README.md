@@ -11,12 +11,10 @@
 Todo App
 https://todo-rust-omega.vercel.app/
 
-App
-├── NewTaskForm
-├── TaskList
-│   └── Task
-└── Footer
-    └──TasksFilter
+
+
+
+
 
 
 // сохранять айди таймера в само задание просто в this при рендере, а не в стейт app
