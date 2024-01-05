@@ -25,9 +25,9 @@ export default class App extends Component {
     if (newLabel === '') {
       this.deleteTask(id)
     } else {
-      this.setState(() => {
+      this.setState(({ todoDate }) => {
         return {
-          todoDate: this.changePropOfTask(id, 'label', newLabel),
+          todoDate: this.changePropOfTask(id, 'label', newLabel, todoDate),
         }
       })
     }
@@ -99,8 +99,7 @@ export default class App extends Component {
     })
   }
 
-  changePropOfTask = (id, propName, newValue) => {
-    const { todoDate } = this.state
+  changePropOfTask = (id, propName, newValue, todoDate) => {
     const indexOfTask = todoDate.findIndex((task) => task.id === id)
 
     const oldTask = todoDate[indexOfTask]
